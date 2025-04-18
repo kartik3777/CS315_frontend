@@ -1,0 +1,96 @@
+
+
+.login-outer{
+    background-color: #efefef9b;
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 70px 30px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.auth-container {
+    width: 340px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    padding-bottom: 40px;
+    background-color: white;
+    /* border: 1px solid #ccc; */
+    box-shadow: 0px 0px 15px rgba(177, 177, 177, 0.436);
+    border-radius: 10px;
+    position: relative;
+    z-index: 30;
+  }
+.auth-container h2{
+    text-align: center;
+    color: #303132;
+
+  }
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+  }
+  .labels{
+    font-weight: 600;
+    color: #515253;
+    margin-left: 1px;
+  }
+  .auth-form input {
+    margin-bottom: 15px;
+    padding: 12px 10px;
+    border-radius: 4px;
+    font-size: 15px;
+    border: 2px solid rgb(146, 146, 164);
+  }
+  .auth-form input:focus {
+      outline: none;
+      border: 2px solid rgb(68, 70, 78);
+  }
+  .auth-form p{
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #515253;
+  }
+  #forgot{
+    color: #4e0ad6;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .sign-up-link{
+    color: rgb(0, 13, 255);
+    cursor: pointer;
+  }
+  .auth-form button {
+    padding: 13px;
+    background-color: #582af1;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  .auth-form button:hover {
+    background-color: #4e0ad6;
+  }
+  #message {
+    color: #ff5500;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .otp-btn{
+   /* width: 80px; */
+   position: absolute;
+   right: 20px;
+   top: 148px;
+   margin-bottom: 5px;
+   padding: 10px 13px;
+   background-color: #7146ff;
+   color: #fff;
+   border-radius: 4px;
+   cursor: pointer;
+   margin-top: 20px;
+   font-size: 16px;
+  }
