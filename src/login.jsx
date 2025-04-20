@@ -2,24 +2,30 @@ import React, {useState} from 'react'
 import axios from 'axios'
 import './login.css'
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setToken, setUser } from './redux/userSlice';
+import { saveState } from './redux/localStorage';
+import { store } from './redux/store';
 
 function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
     const [isSignUp, setIsSignUp] = useState(false);
-    const[user, setUser] = useState("")
+    // const[user, setUser] = useState("")
     const [otpFromApi, setOtpFromApi] = useState("");
     const [formData, setFormData] = useState({
       name: '',
       email: '',
       otp: '',
-      password: ''
+      password: '',
+      role:''
     });
     const [message, setMessage] = useState('');
   
     // Toggle between Sign Up and Sign In
     const toggleForm = () => {
       setIsSignUp(!isSignUp);
-      setFormData({ name: '', email: '', otp: '', password: '' });
+      setFormData({ name: '', email: '', otp: '', password: '', role:'' });
       setMessage('');
     };
   
@@ -44,10 +50,11 @@ function Login() {
       try {
         if (isSignUp) {
           // Sign Up Request
-          const response = await axios.post('http://localhost:5000/api/user/signup', {
+          const response = await axios.post('http://localhost:5000/api/users/register', {
             name: formData.name,
             email: formData.email,
-            password: formData.password
+            password: formData.password,
+            role : formData.role
           });
           console.log(response);
           
@@ -55,24 +62,33 @@ function Login() {
         } else {
 
           // Sign In Request
-          const response = await axios.post('http://localhost:5000/api/user/login', {
+          const response = await axios.post('http://localhost:5000/api/users/login', {
             email: formData.email,
             password: formData.password
           });
           console.log(response.data);
-          // setUser(response.data.data.user.name);
-          localStorage.setItem('userData', JSON.stringify(response.data.data.user));
-          navigate("/nav");
+                              ///////////////store data here///////////////////
+                              const userData = {
+                                ...response.data.user,
+                                token: response.data.token, // <-- manually attach token here
+                              };
+                        
+                              dispatch(setUser(userData));
+                              saveState(store.getState()); // only saves { user }
+
+          navigate("/nav/home");
           setMessage(response.data.message || 'Sign in successful!');
         }
       } catch (error) {
+        console.log(error);
+        
         setMessage(error.response?.data?.message || 'An error occurred');
       }
     };
 
     const hanldeotp = async () => {
             try {
-              const response = await axios.post('http://localhost:5000/api/user/sendotp', {
+              const response = await axios.post('http://localhost:5000/api/auth/send-otp', {
                email : formData.email
               });
               alert("otp sended !!");
@@ -85,16 +101,6 @@ function Login() {
             }
     }
 
-    // function getdata(){
-    //   console.log("data from local storage");
-    //   const savedData = localStorage.getItem('userData');
-    //   console.log(JSON.parse(savedData));
-    //   setUser(JSON.parse(savedData).name);
-    // }
-    // function logout(){
-    //   setUser("");
-    //   localStorage.removeItem('userData'); 
-    // }
 
   return (
     <div style={{padding: isSignUp? "40px 30px": "70px 30px"}} className="login-outer">
@@ -134,6 +140,18 @@ function Login() {
               name="otp"
               placeholder="OTP"
               value={formData.otp}
+              onChange={handleChange}
+              required
+            />
+          </>
+        }
+        {
+          isSignUp && <> 
+            <input
+              type="text"
+              name="role"
+              placeholder="Role"
+              value={formData.role}
               onChange={handleChange}
               required
             />
