@@ -1,0 +1,25 @@
+.user-details {
+    /* padding: 2rem;
+    max-width: 600px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1); */
+  }
+  
+  .user-details h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .user-info p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .loading-text {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2rem;
+  }
+  

@@ -59,6 +59,17 @@ function NavBar() {
               Vehicles
             </Link>
           </li>
+          {
+            user.role === 'admin' &&
+          <li>
+            <Link
+              to="users"
+              className={`navbar-item ${location.pathname.endsWith('/users') ? 'active' : ''}`}
+            >
+              Users
+            </Link>
+          </li>
+          }
           <li>
             <Link
               to="profile"

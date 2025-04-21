@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './vehicles.css';
-import { Buffer } from 'buffer';
+import { useSelector } from "react-redux";
+
+import VehicleCard from './VehicleCard';
 
 const VehicleList = () => {
+  const user = useSelector((state) => state.user);
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [newVehicle, setNewVehicle] = useState({
-    name: '',
     type: '',
     model: '',
     year: '',
@@ -39,23 +41,24 @@ const VehicleList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const fullDate = `${newVehicle.year}-01-01`; // or any fixed month/day you want
   
     const formData = new FormData();
-    formData.append('name', newVehicle.name);
+    formData.append('owner_id', user.user_id);
     formData.append('type', newVehicle.type);
     formData.append('model', newVehicle.model);
-    formData.append('year', newVehicle.year);
-    formData.append('registration_no', newVehicle.registration_no);
+    formData.append('manufacturing_date', fullDate);
+    formData.append('registration_number', newVehicle.registration_no);
     formData.append('price_per_day', newVehicle.price_per_day);
-    formData.append('availability', newVehicle.availability);
+    // formData.append('availability', newVehicle.availability);
   
     // Append multiple images
     for (let i = 0; i < newVehicle.images.length; i++) {
-      formData.append('images', newVehicle.images[i]); // "images" is key expected by backend
+      formData.append('encoded_image', newVehicle.images[i]); // "images" is key expected by backend
     }
   
     try {
-      const response = await axios.post('http://localhost:5000/api/vehicles', formData, {
+      const response = await axios.post('http://localhost:5000/api/vehicles/addVehicle', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -65,7 +68,7 @@ const VehicleList = () => {
       const addedVehicle = response.data;
   
       setVehicles(prev => [...prev, addedVehicle]);
-      setNewVehicle({ name: '', type: '', model: '', year: '', availability: true, images: [] });
+      setNewVehicle({ type: '',registration_no:'',price_per_day:'', model: '', year: '', availability: true, images: [] });
       setImagePreviews([]);
       setShowForm(false);
     } catch (error) {
@@ -109,7 +112,7 @@ const VehicleList = () => {
         <div className='add-vehicle-form'>
           <h3>Add New Vehicle</h3>
           <form onSubmit={handleSubmit}>
-            <input type='text' name="name" placeholder="Name" value={newVehicle.name} onChange={handleChange} required />
+            {/* <input type='text' name="name" placeholder="Name" value={newVehicle.name} onChange={handleChange} required /> */}
             <input type='text' name="type" placeholder="Type" value={newVehicle.type} onChange={handleChange} required />
             <input type='text' name="model" placeholder="Model" value={newVehicle.model} onChange={handleChange} required />
             <input type='text' name="year" placeholder="Year" value={newVehicle.year} onChange={handleChange} required />
@@ -135,27 +138,13 @@ const VehicleList = () => {
       )}
 
     <div className='vehicle-cont'>
-      {vehicles.map((vehicle, index) => (
-        <p className='vehicle-data' key={index}>
-          <p><strong>Availability:</strong> {vehicle.availability ? 'Yes' : 'No'}</p>
-          <p><strong>Type:</strong> {vehicle.type}</p>
-          <p><strong>Model:</strong> {vehicle.model}</p>
-          <p><strong>Registration_number:</strong> {vehicle.registration_number}</p>
-          <p><strong>Price_per_day:</strong> {vehicle.price_per_day}</p>
-          <button className='pay-btn'>Buy</button>
-
-          {vehicle.images.map((img, idx) => {
-  const hex = img.encoded_image.replace(/^\\x/, '');
-  const base64 = Buffer.from(hex, 'hex').toString('base64');
-  const imageUrl = `data:image/jpeg;base64,${base64}`;
-
-  return (
-    <img key={idx} src={imageUrl} alt={`vehicle-${idx}`} style={{ width: '200px', margin: '10px' }} />
-  );
-})}
-
-        </p>
-      ))}
+      {vehicles && vehicles.length > 0 ? (
+        vehicles.map((vehicle, index) => (
+          <VehicleCard key={index} vehicle={vehicle} />
+        ))
+      ) : (
+        <p className="no-vehicles">No vehicles found.</p>
+      )}
     </div>
   </div>
   );

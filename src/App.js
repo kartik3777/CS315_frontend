@@ -5,6 +5,8 @@ import NavBar from './NavBar'
 import Profile from './Profile';
 import Home from './Home';
 import VehicleList from './Vehicles';
+import Users from './Users';
+import UserDetails from './UserDetails';
 
 function App() {
 
@@ -20,6 +22,8 @@ function App() {
           <Route path="home" element={<Home />} />
           <Route path="profile" element={<Profile />} />
           <Route path="vehicles" element={<VehicleList />} />
+          <Route path="users" element={<Users />} />
+          <Route path="users/:userId" element={<UserDetails />} />
 
         </Route>
 
