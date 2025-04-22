@@ -129,5 +129,27 @@
     cursor: pointer;
     font-size: 15px;
   }
+  .vehicle-filter{
+    display: flex;
+    gap: 10px;
+    background-color: #e1e1e1;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .btn-filter{
+    outline: none;
+    border: none;
+    padding: 8px 12px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  .btn-filter.active {
+    background-color: #007bff; /* Bootstrap primary blue */
+    color: white;
+    border-color: #007bff;
+  }
   
 

@@ -7,6 +7,8 @@ import Home from './Home';
 import VehicleList from './Vehicles';
 import Users from './Users';
 import UserDetails from './UserDetails';
+import Logout from './Logout';
+import VehicleDetailsPage from './VehicleDetailPage';
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="vehicles" element={<VehicleList />} />
           <Route path="users" element={<Users />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="vehicles/:vehicle_id" element={<VehicleDetailsPage />} />
           <Route path="users/:userId" element={<UserDetails />} />
 
         </Route>

@@ -7,6 +7,7 @@ import VehicleCard from './VehicleCard';
 
 const VehicleList = () => {
   const user = useSelector((state) => state.user);
+  const [selected, setSelected] = useState('');
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -98,10 +99,58 @@ const VehicleList = () => {
   if (loading) return <p>Loading vehicles...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  const handleAvailable = async () => {
+    setSelected('available');
+    try {
+      setLoading(true);
+      const url = 'http://localhost:5000/api/vehicles/available';
+      const res = await axios.get(url);
+      console.log('========available=======================');
+      console.log(res.data);
+      console.log('====================================');
+      setVehicles(res.data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Error fetching vehicles:', err);
+    }
+  };
+  const handleRented = async () => {
+    setSelected('rented');
+    setLoading(true);
+    try {
+      const url = 'http://localhost:5000/api/vehicles/currentbooked';
+      const res = await axios.get(url);
+      console.log('==============rented=================');
+      console.log(res.data);
+      console.log('====================================');
+      setVehicles(res.data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Error fetching vehicles:', err);
+    }
+  };
+
+
+
   return (
     <div>
       <div className="vehicle-top">
       <h2>Vehicle List</h2>
+      <div className="vehicle-filter">
+      <button
+        className={`btn-filter ${selected === 'available' ? 'active' : ''}`}
+        onClick={handleAvailable}
+      >
+        Available
+      </button>
+      <button
+        className={`btn-filter ${selected === 'rented' ? 'active' : ''}`}
+        onClick={handleRented}
+      >
+        Rented
+      </button>
+    </div>
+
     <button className='add-button' onClick={() => setShowForm(true)} >
         + Add New Vehicle
       </button>

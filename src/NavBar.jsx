@@ -78,6 +78,14 @@ function NavBar() {
               Profile
             </Link>
           </li>
+          <li>
+            <Link
+              to="logout"
+              className={`navbar-item ${location.pathname.endsWith('/logout') ? 'active' : ''}`}
+            >
+              Log out
+            </Link>
+          </li>
         </ul>
       </nav>
 
